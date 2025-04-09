@@ -13,17 +13,11 @@ export default function Home() {
     router.push('/product')
   }
 
-  const query = useQuery({
-    queryKey: ['weather'],
-    queryFn: fetchData,
-  })
-
   useEffect(() => {
     renderCount.current += 1
     console.log(`렌더링 횟수: ${renderCount.current}회`)
   })
 
-  console.log(query.data?.weather)
   return (
     <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
       <div>렌더링 횟수: {renderCount.current}회</div>
