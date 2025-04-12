@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchData, WeatherData } from '../../lib/data'
 
 export default function WeatherPage() {
-  const [searchValue, setSearchValue] = useState('bangalore')
+  const [searchValue, setSearchValue] = useState('seoul')
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [errorShown, setErrorShown] = useState(false)
   const queryClient = useQueryClient()
@@ -58,35 +58,29 @@ export default function WeatherPage() {
   }
 
   return (
-    <div id="webcrumbs">
-      <div className="relative flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4">
-        <div className="from-primary-400 to-primary-600 relative h-auto w-full max-w-md overflow-hidden rounded-xl bg-gradient-to-br p-5 shadow-xl lg:max-w-lg">
-          <SearchBar
-            value={searchValue}
-            onChange={setSearchValue}
-            onSearch={handleSearch}
-          />
+    <div className="flex h-screen items-center justify-center p-4">
+      <div className="max-w-md rounded-2xl bg-gradient-to-r from-[#8B5CF6] to-[#611BF8] p-5 shadow-xl">
+        <SearchBar
+          value={searchValue}
+          onChange={setSearchValue}
+          onSearch={handleSearch}
+        />
 
-          <div className="mt-4 flex flex-col items-center">
-            <WeatherIcon
-              onRefresh={handleRefresh}
-              iconCode={weatherData?.iconCode}
-            />
-            <WeatherInfo
-              temperature={
-                weatherData ? `${weatherData.temperature}°C` : '--°C'
-              }
-              city={weatherData?.city || searchValue}
-            />
-            <WeatherDetails
-              humidity={weatherData ? `${weatherData.humidity}%` : '--%'}
-              windSpeed={
-                weatherData ? `${weatherData.windSpeed} km/h` : '-- km/h'
-              }
-            />
-          </div>
-          {/* Next: "Add daily forecast cards below with min/max temperatures" */}
-          {/* Next: "Add air quality index indicator" */}
+        <div className="mt-4 flex flex-col items-center">
+          <WeatherIcon
+            onRefresh={handleRefresh}
+            iconCode={weatherData?.iconCode}
+          />
+          <WeatherInfo
+            temperature={weatherData ? `${weatherData.temperature}°C` : '--°C'}
+            city={weatherData?.city || searchValue}
+          />
+          <WeatherDetails
+            humidity={weatherData ? `${weatherData.humidity}%` : '--%'}
+            windSpeed={
+              weatherData ? `${weatherData.windSpeed} km/h` : '-- km/h'
+            }
+          />
         </div>
       </div>
     </div>

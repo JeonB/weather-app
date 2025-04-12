@@ -23,7 +23,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       </div>
       <button
         onClick={onSearch}
-        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-lg bg-white shadow-md transition-all duration-300 hover:bg-gray-100 sm:h-14 sm:w-14">
+        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-3xl bg-white shadow-md transition-all duration-300 hover:bg-gray-300 sm:h-14 sm:w-14">
         <span className="material-symbols-outlined text-gray-500">search</span>
       </button>
     </div>

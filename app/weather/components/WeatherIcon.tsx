@@ -1,9 +1,39 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import { motion } from 'framer-motion'
 
 interface WeatherIconProps {
   onRefresh?: () => void
   iconCode?: string
 }
+
+const RainDrop = ({
+  left,
+  delay,
+  duration,
+  height,
+}: {
+  left: number
+  delay: number
+  duration: number
+  height: number
+}) => (
+  <motion.div
+    className={`absolute -skew-x-[15deg] rounded-full bg-blue-400`}
+    style={{
+      left: `${left}%`,
+      height: `${height}px`,
+      width: '3px',
+    }}
+    initial={{ y: '-10%', opacity: 0.8 }}
+    animate={{ y: '100%', opacity: 0 }}
+    transition={{
+      duration,
+      repeat: Infinity,
+      ease: 'linear',
+      delay,
+    }}
+  />
+)
 
 export const WeatherIcon: React.FC<WeatherIconProps> = ({
   onRefresh,
@@ -159,6 +189,18 @@ export const WeatherIcon: React.FC<WeatherIconProps> = ({
           </div>
         )
       case '10': // 비
+        const raindrops = useMemo(() => {
+          // 8-12개의 무작위 빗방울 생성
+          const count = Math.floor(Math.random() * 5) + 8
+          return Array.from({ length: count }).map((_, i) => ({
+            id: i,
+            left: Math.random() * 90 + 5, // 5% ~ 95% 사이의 무작위 위치
+            delay: Math.random() * 1.5, // 0 ~ 1.5초 사이의 무작위 지연
+            duration: 0.8 + Math.random() * 0.6, // 0.8 ~ 1.4초 사이의 무작위 지속시간
+            height: 28 + Math.floor(Math.random() * 8), // 28px ~ 36px 사이의 무작위 높이
+          }))
+        }, [])
+
         return (
           <div className="relative h-24 w-24">
             <svg
@@ -167,13 +209,17 @@ export const WeatherIcon: React.FC<WeatherIconProps> = ({
               fill="currentColor">
               <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
             </svg>
-            <svg
-              className="absolute bottom-0 left-0 h-12 w-24 text-blue-400"
-              viewBox="0 0 24 24"
-              fill="currentColor">
-              <path d="M12 4c-4.41 0-8 3.59-8 8s3.59 8 8 8 8-3.59 8-8-3.59-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" />
-              <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
-            </svg>
+            <div className="absolute top-16 right-0 left-0 h-24 overflow-hidden">
+              {raindrops.map(drop => (
+                <RainDrop
+                  key={drop.id}
+                  left={drop.left}
+                  delay={drop.delay}
+                  duration={drop.duration}
+                  height={drop.height}
+                />
+              ))}
+            </div>
           </div>
         )
       case '11': // 천둥번개
